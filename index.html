@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+        }
+
+        #save {
+            margin-left: 207px;
+        }
+
+        .pade {
+            height: 400px;
+            width: 400px;
+            position: relative;
+            left: 57px;
+            top: 169px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pade">
+        <canvas id="canvas" width="300" height="200"></canvas>
+        <br>
+        <button onclick="clearc()">clear</button>
+        <button id="save" onclick="save()">save</button>
+    </div>
+</body>
+<script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let lastX = 0;
+    let lastY = 0;
+    let isDrawing = false
+    canvas.addEventListener('mousedown', (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY]
+    })
+    canvas.addEventListener('mousemove', (e) => {
+        if (isDrawing) {
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+    })
+    canvas.addEventListener('mouseup', (e) => {
+        isDrawing = false;
+    })
+    canvas.addEventListener('mouseout', (e) => {
+        isDrawing = false;
+    })
+    function clearc() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    function save() {
+        canvas.style.backgroundColor = 'white';
+        const image = canvas.toDataURL('image/pnj');
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = '';
+        link.click();
+    }
+</script>
+
+</html>
